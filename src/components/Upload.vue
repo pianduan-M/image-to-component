@@ -23,8 +23,6 @@ async function onPaste(e) {
 
   const clipboardItem = clipboardItems[0];
 
-  console.log(clipboardItem, "clipboardItem");
-
   for (const type of clipboardItem.types) {
     // 筛选图片类型的文件
     if (type.indexOf("image") > -1) {

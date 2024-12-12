@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import Upload from './components/Upload.vue'
-
+import HomePage from "./views/home.vue";
 </script>
 
 <template>
   <div>
-    <Upload />
+    <HomePage />
   </div>
 </template>
 
 <style scoped>
+
 .logo {
   height: 6em;
   padding: 1.5em;
