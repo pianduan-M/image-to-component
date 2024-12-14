@@ -1,4 +1,6 @@
 :root {
+  --color: rgba(255, 255, 255, 0.87);
+  --bgColor: #313131;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -24,6 +26,8 @@ body {
 
 @media (prefers-color-scheme: light) {
   :root {
+    --color: #213547;
+    --bgColor: #fff;
     color: #213547;
     background-color: #ffffff;
   }

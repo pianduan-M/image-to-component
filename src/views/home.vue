@@ -40,6 +40,7 @@
           style="width: 100%"
           placeholder="请选择类型"
           v-model:value="resultType"
+          @change="onTypeChange"
         >
           <Select.Option label="表格" value="table"> </Select.Option>
           <Select.Option label="表单" value="form"> </Select.Option>
@@ -47,10 +48,35 @@
           <Select.Option label="formItems" value="formItems"> </Select.Option>
         </Select>
 
+        <div v-if="isShowFormItemsTypeSelect">
+          <Form>
+            <template v-for="(item, i) in formResultList" :key="item.id">
+              <Divider v-if="i !== 0" />
+              <FormItem label="label:">
+                {{ item.text }}
+              </FormItem>
+              <FormItem label="类型:">
+                <Select
+                  style="width: 100%"
+                  placeholder="请选择类型"
+                  v-model:value="item.type"
+                >
+                  <Select.Option label="输入框" value="input"> </Select.Option>
+                  <Select.Option label="选择框" value="select"> </Select.Option>
+                  <Select.Option label="时间选择器" value="date">
+                  </Select.Option>
+                </Select>
+              </FormItem>
+            </template>
+          </Form>
+        </div>
+
         <div class="btn">
           <Space>
             <Button @click="onBack">返回</Button>
-            <Button :disabled="loading" type="primary" @click="onsubmit" >确认生成</Button>
+            <Button :disabled="loading" type="primary" @click="onsubmit"
+              >确认生成</Button
+            >
           </Space>
         </div>
       </div>
@@ -72,11 +98,19 @@ import {
   Button,
   Space,
   Spin,
+  Form,
+  FormItem,
+  Divider,
   message,
 } from "ant-design-vue";
 import { InboxOutlined } from "@ant-design/icons-vue";
 import { ocr } from "../utils/ocr";
-import { genFormCode, genTableCode } from "../tpl/tools";
+import {
+  genFormCode,
+  genTableCode,
+  genPdForm,
+  genPageContent,
+} from "../tpl/tools";
 
 const fileList = [];
 const loading = ref(false);
@@ -84,6 +118,8 @@ const currentUrl = ref("");
 const resultText = ref("");
 const result = ref();
 const resultType = ref();
+const isShowFormItemsTypeSelect = ref(false);
+const formResultList = ref([]);
 
 const handleChange = async (info) => {
   const { file } = info;
@@ -114,14 +150,24 @@ function onsubmit() {
     return message.error("请选择生成类型");
   }
 
+  let list = resultText.value.split(/\s+/);
+
   let callback;
 
   switch (resultType.value) {
     case "form":
       callback = genFormCode;
+      list = formResultList.value;
+      break;
+    case "formItems":
+      callback = genFormCode;
+      list = formResultList.value;
       break;
     case "table":
       callback = genTableCode;
+      break;
+    case "columns":
+      callback = genPageContent;
       break;
 
     default:
@@ -129,8 +175,20 @@ function onsubmit() {
   }
 
   if (callback) {
-    const list = resultText.value.split(" ");
     result.value = callback(list);
+  }
+}
+
+function onTypeChange(val) {
+  if (val.includes("form")) {
+    isShowFormItemsTypeSelect.value = true;
+    formResultList.value = resultText.value.split(/\s+/).map((text) => ({
+      text,
+      type: "input",
+      id: Math.floor(Math.random() * 10000),
+    }));
+  } else {
+    isShowFormItemsTypeSelect.value = false;
   }
 }
 
@@ -177,6 +235,10 @@ function handleDrop(e) {
       display: flex;
       justify-content: flex-end;
     }
+  }
+
+  .ant-form-item {
+    margin-bottom: 0;
   }
 }
 </style>

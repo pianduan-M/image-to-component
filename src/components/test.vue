@@ -12,6 +12,21 @@
       <el-table-column label="发票与凭证" prop="发票与凭证"></el-table-column>
       <el-table-column label="操作" prop="操作"></el-table-column>
     </el-table>
+
+    <el-form :model="formData" label-position="left" label-width="auto">
+      <el-form-item label="分析及状况" prop="分析及状况">
+        <el-input
+          v-model="formData.分析及状况"
+          size="md"
+          placeholder="请输入"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="操作" prop="操作">
+        <el-select v-model="formData.操作">
+          <el-option></el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 

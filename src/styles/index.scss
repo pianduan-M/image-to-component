@@ -5,3 +5,22 @@
 .ant-upload-wrapper .ant-upload-drag p.ant-upload-hint {
   color: rgba(255, 255, 255, 0.87) !important;
 }
+
+.ant-form-item .ant-form-item-label > label {
+  color: var(--color);
+}
+
+.ant-form-item {
+  color: var(--color);
+}
+
+.ant-divider {
+  background-color: var(--color);
+}
+
+.ant-input,
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  background-color: var(--bgColor);
+  border-color: var(--bgColor);
+  color: var(--color);
+}
